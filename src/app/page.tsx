@@ -13,14 +13,15 @@ interface RegistrationData {
 
 export default function Home() {
   const [data, setData] = useState<RegistrationData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async () => {
     const res = await fetch("https://test-api-py77dwlbxa-df.a.run.app/data");
     const data = await res.json();
+    await setLoading(false);
     setData(data);
   }
   useEffect(() => {
-    document.title = "ขึ้นทะเบียนสำเร็จ";
     fetchData();
   }, [])
 
@@ -40,7 +41,10 @@ export default function Home() {
               <div className="flex justify-end">
                 <input type="text" placeholder="ค้นหา" className="input input-bordered w-full max-w-xs" />
               </div>
-              <div className="overflow-x-auto bg-white mt-5 text-black">
+              <div className="flex justify-center items-center">
+              <span className={`${loading ? 'block' : 'hidden'} loading loading-spinner loading-full`}></span>
+              </div>
+              <div className={`${loading ? 'hidden' : 'block'} overflow-x-auto bg-white mt-5 text-black`}>
                 <table className="table">
                   {/* head */}
                   <thead>
